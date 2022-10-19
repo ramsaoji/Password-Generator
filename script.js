@@ -27,8 +27,7 @@ const characters = {
   suffixRegexPattern: ".+$",
 };
 
-//Assigning slider value to passLength before all other things so it don't create ambiguity on slider.
-let passLength = lengthSlider.value;
+//Assigning slider value to lengthSlider.value before all other things so it don't create ambiguity on slider.
 
 //Generating password function
 const generatePassword = () => {
@@ -46,20 +45,20 @@ const generatePassword = () => {
 
       // Checking or Unchecking upper,number and symbols checkboxes depending on slider range and excludeDuplicateCheckbox as well as disabling excludeDuplicateCheckbox
       if (
-        passLength > 20 &&
-        passLength <= 25 &&
+        lengthSlider.value > 20 &&
+        lengthSlider.value <= 25 &&
         excludeDuplicateCheckbox.checked == true
       ) {
         upperCaseChekbox.checked = true;
       } else if (
-        passLength > 25 &&
-        passLength <= 30 &&
+        lengthSlider.value > 25 &&
+        lengthSlider.value <= 30 &&
         excludeDuplicateCheckbox.checked == true
       ) {
         upperCaseChekbox.checked = true;
         numbersChekbox.checked = true;
         symbolsChekbox.checked = true;
-      } else if (passLength > 30) {
+      } else if (lengthSlider.value > 30) {
         excludeDuplicateCheckbox.checked = false;
         excludeDuplicateCheckbox.disabled = true;
       } else {
@@ -98,7 +97,7 @@ const generatePassword = () => {
   regexExp = new RegExp(regex);
 
   //Generating randomPassword depending upon staticVariable string and its length
-  for (let i = 0; i < passLength; i++) {
+  for (let i = 0; i < lengthSlider.value; i++) {
     randomPassword =
       randomPassword +
       staticPassword[Math.floor(Math.random() * staticPassword.length)];
@@ -109,7 +108,7 @@ const generatePassword = () => {
     //getting unique values in randomPassword
     randomPassword = Array.from(new Set(randomPassword.split(""))).join("");
 
-    // if(randomPassword.length < passLength) {
+    // if(randomPassword.length < lengthSlider.value) {
     //     generatePassword();
     //     return
     // }
