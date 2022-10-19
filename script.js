@@ -39,7 +39,10 @@ const generatePassword = () => {
         
         if(option.checked){ // if checkbox is checked
 
-            if(upperCaseChekbox.checked == true && passLength <= 25){
+            if(passLength <= 20){
+                excludeDuplicateCheckbox.disabled = false;
+            }
+            else if(upperCaseChekbox.checked == true && passLength <= 25){
                 excludeDuplicateCheckbox.disabled = false;
             }else if(passLength <= 25 && numbersChekbox.checked == true && symbolsChekbox.checked == true){
                 excludeDuplicateCheckbox.disabled = false;
