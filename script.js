@@ -27,12 +27,14 @@ const characters = {
   suffixRegexPattern: ".+$",
 };
 
+//Assigning slider value to passLength before all other things so it don't create ambiguity on slider.
+let passLength = lengthSlider.value;
+
 //Generating password function
 const generatePassword = () => {
   let staticPassword = "",
     randomPassword = "",
     excludeDuplicate = false,
-    passLength = lengthSlider.value,
     regex = "^",
     regexExp = "";
 
