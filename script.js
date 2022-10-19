@@ -136,7 +136,6 @@ const updatePassIndicator = () => {
 
 //Updating password length slider value to the password length (span) value.
 const updateSlider = () => {
-
   //blocking slider at minimum 5 length to get password with all filters if all are applied
   rangeValue = lengthSlider.value;
   if (rangeValue < 5) {
@@ -150,9 +149,10 @@ const updateSlider = () => {
   //Changing textarea size according to the password length
   let heightLimit = 10; /* Maximum height: 10rem */
   passwordInput.style.height = ""; /* Reset the height*/
-  passwordInput.style.height = Math.min(passwordInput.scrollHeight/15.5, heightLimit) + "rem";
+  passwordInput.style.height =
+    Math.min(passwordInput.scrollHeight / 15.5, heightLimit) + "rem";
 
-  document.querySelector(".details span").innerHTML = lengthSlider.value;
+  document.querySelector(".details span").innerText = lengthSlider.value;
 };
 //Calling to show password for the 1st time when page loads
 updateSlider();
@@ -187,7 +187,6 @@ const resetPasswordSettings = () => {
     }
   }
 };
-
 
 copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);

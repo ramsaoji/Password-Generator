@@ -130,7 +130,7 @@ body {
   padding-left: 0.63rem;
 }
 .options .option:nth-child(5) {
-  line-height: 0.850rem;
+  line-height: 0.85rem;
   display: flex;
   align-items: flex-start;
 }
@@ -138,7 +138,7 @@ body {
   font-size: 0.6rem;
 }
 .options .option:nth-child(6) {
-  line-height: 0.850rem;
+  line-height: 0.85rem;
   display: flex;
   align-items: flex-start;
 }
