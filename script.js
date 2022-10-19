@@ -140,6 +140,7 @@ const updateSlider = () => {
   rangeValue = lengthSlider.value;
   if (rangeValue < 5) {
     lengthSlider.value = 5;
+    document.querySelector(".details span").innerText = lengthSlider.value;
     return;
   }
 
@@ -150,7 +151,7 @@ const updateSlider = () => {
   let heightLimit = 10; /* Maximum height: 10rem */
   passwordInput.style.height = ""; /* Reset the height*/
   passwordInput.style.height =
-    Math.min(passwordInput.scrollHeight / 15.5, heightLimit) + "rem";
+  Math.min(passwordInput.scrollHeight / 15.5, heightLimit) + "rem";
 
   document.querySelector(".details span").innerText = lengthSlider.value;
 };
