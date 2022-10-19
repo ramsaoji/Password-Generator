@@ -139,7 +139,7 @@ const updateSlider = () => {
   //Changing textarea size according to the password length
   let heightLimit = 10; /* Maximum height: 10rem */
   passwordInput.style.height = ""; /* Reset the height*/
-  passwordInput.style.height = Math.min(passwordInput.scrollHeight/16, heightLimit) + "rem";
+  passwordInput.style.height = Math.min(passwordInput.scrollHeight/15.5, heightLimit) + "rem";
 
   //blocking slider at minimum 5 length to get password with all filters if all are applied
   rangeValue = lengthSlider.value;
