@@ -62,21 +62,6 @@ const generatePassword = () => {
         excludeDuplicateCheckbox.disabled = false;
       }
 
-      // if(passLength <= 20){
-      //     excludeDuplicateCheckbox.disabled = false;
-      // }
-      // else if(upperCaseChekbox.checked == true && passLength <= 25){
-      //     excludeDuplicateCheckbox.disabled = false;
-      // }else if(passLength <= 25 && numbersChekbox.checked == true && symbolsChekbox.checked == true){
-      //     excludeDuplicateCheckbox.disabled = false;
-      // }
-      // else if(upperCaseChekbox.checked == true && passLength > 25 && passLength <= 30 && numbersChekbox.checked == true && symbolsChekbox.checked == true){
-      //     excludeDuplicateCheckbox.disabled = false;
-      // }else{
-      //     excludeDuplicateCheckbox.checked = false;
-      //     excludeDuplicateCheckbox.disabled = true;
-      // }
-
       // Appending regex from characters object to regex variable depending on conditions
       if (option.id == "lowercase") {
         regex += characters.lowercaseRegex;
