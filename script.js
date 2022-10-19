@@ -4,22 +4,24 @@ const lengthSlider = document.querySelector(".pass-length input"),
   copyIcon = document.querySelector(".input-box span"),
   passIndicator = document.querySelector(".pass-indicator"),
   resetIcon = document.querySelector(".pass-settings-title span");
-(generateBtn = document.querySelector(".generate-btn")),
-  (excludeDuplicateCheckbox = document.getElementById("exc-duplicate")),
-  (upperCaseChekbox = document.getElementById("uppercase")),
-  (numbersChekbox = document.getElementById("numbers")),
-  (symbolsChekbox = document.getElementById("symbols"));
+  generateBtn = document.querySelector(".generate-btn"),
+  excludeDuplicateCheckbox = document.getElementById("exc-duplicate"),
+  upperCaseChekbox = document.getElementById("uppercase"),
+  numbersChekbox = document.getElementById("numbers"),
+  symbolsChekbox = document.getElementById("symbols");
 
 const characters = {
   //object of letters,numbers & symbols and regex
   lowercase: "abcdefghijklmnopqrstuvwxyz",
   uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
   numbers: "0123456789",
-  symbols: "-!$%^&*()_+|~=`{}:<>?,;",
+  //symbols: "-!$%^&*()_+|~=`{}:<>?,;"
+  symbols: "@%&!^#*$",
   lowercaseRegex: "(?=.*[a-z])",
   uppercaseRegex: "(?=.*[A-Z])",
   numbersRegex: "(?=.*\\d)",
-  symbolsRegex: "(?=.*[-!$%^&*()_+\\|~=`{}\":'<>?,;./])",
+  //symbolsRegex: "(?=.*[-!$%^&*()_+\\|~=`{}\":'<>?,;./])"
+  symbolsRegex: "(?=.*[@%&!^#*$])",
   spaceRegex: "(?=.*[ ])",
   prefixRegexPattern: "^",
   suffixRegexPattern: ".+$",
@@ -112,8 +114,6 @@ const generatePassword = () => {
   }
 
   //Validating Password with all applied filters using regexExp
-  console.log("before - " + randomPassword);
-  console.log(regexExp);
   if (regexExp.test(randomPassword)) {
     passwordInput.value = randomPassword;
   } else {
@@ -135,16 +135,11 @@ const updatePassIndicator = () => {
 
 //Updating password length slider value to the password length (span) value.
 const updateSlider = () => {
+
   //Changing textarea size according to the password length
-  for (let i = 0; i <= lengthSlider.value; i++) {
-    if (lengthSlider.value > 30 && lengthSlider.value < 60) {
-      passwordInput.setAttribute("style", "height: 4rem");
-    } else if (lengthSlider.value > 60) {
-      passwordInput.setAttribute("style", "height: 5rem");
-    } else {
-      passwordInput.setAttribute("style", "height: 2.2rem");
-    }
-  }
+  let heightLimit = 10; /* Maximum height: 10rem */
+  passwordInput.style.height = ""; /* Reset the height*/
+  passwordInput.style.height = Math.min(passwordInput.scrollHeight/16, heightLimit) + "rem";
 
   //blocking slider at minimum 5 length to get password with all filters if all are applied
   rangeValue = lengthSlider.value;
@@ -164,7 +159,7 @@ updateSlider();
 //Copying Password to clipboard using copy icon
 const copyPassword = () => {
   navigator.clipboard.writeText(passwordInput.value); // copying randomPassword to clipboard
-  copyIcon.innerHTML = "check"; // chenging copy icon to tick
+  copyIcon.innerHTML = "check"; // changing copy icon to tick
 
   setTimeout(() => {
     //after 1.5 sec changing tick icon back to copy icon
@@ -179,17 +174,22 @@ for (let i = 0; i < options.length; i++) {
   }
 }
 
-//Resetting all checkboxes on clickling reset icon
+//Resetting all checkboxes and all other things on clickling reset icon
 const resetPasswordSettings = () => {
   for (let i = 0; i < options.length; i++) {
     if (options[i].type === "checkbox" && options[i].id != "lowercase") {
       options[i].checked = false;
       excludeDuplicateCheckbox.disabled = false;
+      lengthSlider.value = 15;
+      generatePassword();
+      updateSlider();
     }
   }
 };
 
+
 copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);
+lengthSlider.addEventListener("click", updateSlider);
 resetIcon.addEventListener("click", resetPasswordSettings);
 generateBtn.addEventListener("click", generatePassword);
