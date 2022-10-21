@@ -21,12 +21,25 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js" defer></script>
   </head>
   <body>
     <div class="container">
       <h2>Password Generator</h2>
       <div class="wrapper">
+        <div class="pass-type">
+          <label for="typeTitle" class="title">Select Type</label>
+          <div class="pass-type-cover">
+            <span class="material-symbols-outlined">
+              expand_more
+              </span>
+            <select name="passwordType" id="select-pass-type">
+              <option value="Password" selected>Password</option>
+              <option value="Passphrase" >Passphrase</option>
+            </select>
+          </div>
+          
+        </div>
         <div class="input-box">
           <textarea type="text" disabled></textarea>
           <span class="material-symbols-rounded">copy_all</span>
@@ -38,7 +51,7 @@
             <label class="title">Password Length</label>
             <span></span>
           </div>
-          <input type="range" min="1" max="100" value="15" step="1" />
+          <input type="range" min="1" max="100"  step="1" />
         </div>
         <!-- pass-length end -->
         <div class="pass-settings">
@@ -47,7 +60,7 @@
             <span class="material-symbols-outlined"> refresh </span>
           </div>
 
-          <ul class="options">
+          <ul class="options-password">
             <li class="option">
               <input type="checkbox" id="lowercase" checked />
               <label for="lowercase">Lowercase (a-z)</label>
@@ -76,6 +89,25 @@
               <label for="spaces">Include Spaces</label>
             </li>
           </ul>
+
+          <div class="passphraseSettingsContainer">
+            <div class="wordSeperator">
+              <label for="inputTitle" class="title">Word Seperator</label>
+              <br>
+              <input type="text" class="wordSeparatorInput" maxlength="1">
+            </div>
+            <ul class="options-passphrase">
+              <li class="option">
+                <input type="checkbox" id="capitalise"/>
+                <label for="capitalise">Capitalise</label>
+              </li>
+              <li class="option">
+                <input type="checkbox" id="incNumber"/>
+                <label for="incNumber">Include Number</label>
+              </li>
+            </ul>
+          </div>
+          
         </div>
         <!-- pass-settings end -->
         <button class="generate-btn">Generate Password</button>
