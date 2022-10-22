@@ -20,6 +20,7 @@ const lengthSlider = document.querySelector(".pass-length input"),
 
 /////////////////////////////////////////////////////////////
 
+
 let jsonDataArray = [];
 //Fetching json data from json file
 async function fetchFun() {
@@ -36,7 +37,7 @@ async function fetchFun() {
 }
 fetchFun(); //Calling for 1st time
 
-// console.log(jsonDataArray);
+console.log(wordSeperatorInput.value);
 
 const generatePassphrase = () => {
   let randomPassphrase = "";
@@ -55,7 +56,6 @@ const generatePassphrase = () => {
         jsonDataArray[Math.floor(Math.random() * jsonDataArray.length)]
       );
     }
-    // console.log(words);
 
     uniqueWords = Array.from(new Set(words)); //Getting unique words in uniquewords array
 
@@ -88,7 +88,7 @@ const generatePassphrase = () => {
       }
     });
 
-    if (wordSeperatorInputValue == "") {
+    if (wordSeperatorInputValue == null) {
       //Setting Default Seprator as space if no input given
       randomPassphrase = uniqueWords.join(wordSeperatorDefault);
     } else {
@@ -198,10 +198,10 @@ const generatePassword = () => {
     //getting unique values in randomPassword
     randomPassword = Array.from(new Set(randomPassword.split(""))).join("");
 
-    // if(randomPassword.length < lengthSlider.value) {
-    //     generatePassword();
-    //     return
-    // }
+    if(randomPassword.length < lengthSlider.value) {
+        generatePassword();
+        return
+    }
   }
 
   //Validating Password with all applied filters using regexExp
@@ -316,7 +316,6 @@ const resetPasswordSettings = () => {
       options[i].checked = false;
       excludeDuplicateCheckbox.disabled = false;
       lengthSlider.value = 15;
-      // generatePassphrase();
       updateSlider();
     }
   }
@@ -327,7 +326,6 @@ const resetPassphraseSettings = () => {
       optionsPassphrase[i].checked = false;
       wordSeperatorInput.value = "-";
       lengthSlider.value = 3;
-      // generatePassword();
       updateSlider();
     }
   }
@@ -391,8 +389,15 @@ selectPassType();
 
 copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);
-// lengthSlider.addEventListener("click", updateSlider);
+lengthSlider.addEventListener("click", updateSlider);
 resetIcon.addEventListener("click", callResetSettings);
 generateBtn.addEventListener("click", callGenerateBtn);
 selectBox.addEventListener("change", selectPassType);
-wordSeperatorInput.addEventListener("input", generatePassphrase);
+
+wordSeperatorInput.addEventListener("input", () =>{
+  
+  if(wordSeperatorInput.value.length >= null){
+    wordSeperatorInput.value = wordSeperatorInput.value.slice(0,1);
+    generatePassphrase();
+  }
+});
