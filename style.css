@@ -10,9 +10,9 @@
 /* textarea custom scrollbar css start */
 ::-webkit-scrollbar {
   width: 0.2rem;
-  margin-right: 0.2rem;
+  margin-right: 0.3rem;
+  /* display: none; */
 }
-
 ::-webkit-scrollbar-track {
   background: #F2F2F2;
 }
@@ -106,15 +106,15 @@ body {
   box-shadow: 0 0 0 1.2px #aaa;
   /* to fix cutting text area corners by custom scrollbar end*/
   border-radius: 4px;
-  padding: 0.3rem 2.2rem 0.3rem 1rem;
+  padding: 0 2rem 0 1rem;
   resize: none;
   /* overflow: hidden; */
 }
 .input-box span {
   position: absolute;
-  right: 8px;
+  right: 10px;
   cursor: pointer;
-  line-height: 2.2rem;
+  line-height: 2rem;
   color: #707070;
 }
 .wrapper .pass-indicator {

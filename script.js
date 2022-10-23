@@ -237,51 +237,58 @@ const updatePassIndicator = () => {
 //Updating password length slider value to the password length (span) value.
 
 const updateSlider = () => {
-  let rangeValue;
 
   if (selectBox.value == "Password") {
-    //blocking slider at minimum 5 length to get password with all filters if all are applied
-    rangeValue = lengthSlider.value;
-    if (rangeValue < 5) {
-      lengthSlider.value = 5;
-      passLengthSpan.innerText = lengthSlider.value;
-      return;
-    }
+    
+    // if (rangeValue < 5) {
 
+    //   lengthSlider.value = 5;
+    //   passLengthSpan.innerText = lengthSlider.value;
+    // }
+
+    //blocking slider at minimum 5 length to get password with all filters if all are applied
+    lengthSlider.min = 5;
     generatePassword();
     updatePassIndicator();
 
     passLengthSpan.innerText = lengthSlider.value;
-
-    //Changing textarea size according to the password length
-    let heightLimit = 10; /* Maximum height: 10rem */
-    passwordInput.style.height = ""; /* Reset the height*/
-    passwordInput.style.height =
-      Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
+    
   } else {
-    rangeValue = lengthSlider.value;
 
-    if (rangeValue < 3) {
-      lengthSlider.value = 3;
-      passLengthSpan.innerText = lengthSlider.value;
-      return;
-    }
+    // if (rangeValue < 3) {
+    //   lengthSlider.value = 3;
+    //   passLengthSpan.innerText = lengthSlider.value;
+    //   return;
+    // }
+
+    //blocking slider at minimum 3 length for passphrase
+    lengthSlider.min = 3;
 
     generatePassphrase();
     updatePassIndicator();
 
     passLengthSpan.innerText = lengthSlider.value;
 
-    if (lengthSlider.value < 4) {
-      passwordInput.style.height = "3.5rem";
-    } else if (lengthSlider.value >= 4 && lengthSlider.value < 8) {
-      passwordInput.style.height = "4rem";
-    } else if (lengthSlider.value >= 8 && lengthSlider.value <= 12) {
-      passwordInput.style.height = "5rem";
-    } else if (lengthSlider.value > 12) {
-      passwordInput.style.height = "7.35542rem";
-    }
+    // if (lengthSlider.value < 4) {
+    //   passwordInput.style.height = "3.5rem";
+    // } else if (lengthSlider.value >= 4 && lengthSlider.value < 8) {
+    //   passwordInput.style.height = "4rem";
+    // } else if (lengthSlider.value >= 8 && lengthSlider.value <= 12) {
+    //   passwordInput.style.height = "5rem";
+    // } else if (lengthSlider.value > 12) {
+    //   passwordInput.style.height = "7.35542rem";
+    // }
+    // let heightLimit = 10; /* Maximum height: 10rem */
+    // passwordInput.style.height = ""; /* Reset the height*/
+    // passwordInput.style.height =
+    // Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
   }
+
+  //Changing textarea size according to the password/passphrase length
+  let heightLimit = 6.71021; /* Maximum height: 6.71021remrem */
+  passwordInput.style.height = ""; /* Reset the height*/
+  passwordInput.style.height =
+  Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
 };
 
 //Copying Password to clipboard using copy icon
@@ -298,14 +305,14 @@ const copyPassword = () => {
 //Calling generatePassword on every checkbox selected
 for (let i = 0; i < options.length; i++) {
   if (options[i].type === "checkbox") {
-    options[i].onclick = generatePassword;
+    options[i].onclick = updateSlider;
   }
 }
 
 //Calling generatePassphrase on every checkbox selected
 for (let i = 0; i < optionsPassphrase.length; i++) {
   if (optionsPassphrase[i].type === "checkbox") {
-    optionsPassphrase[i].onclick = generatePassphrase;
+    optionsPassphrase[i].onclick = updateSlider;
   }
 }
 
@@ -398,6 +405,6 @@ wordSeperatorInput.addEventListener("input", () =>{
   
   if(wordSeperatorInput.value.length >= null){
     wordSeperatorInput.value = wordSeperatorInput.value.slice(0,1);
-    generatePassphrase();
+    updateSlider();
   }
 });
