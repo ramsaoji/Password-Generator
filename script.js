@@ -13,13 +13,20 @@ const lengthSlider = document.querySelector(".pass-length input"),
   numbersChekbox = document.getElementById("numbers"),
   symbolsChekbox = document.getElementById("symbols"),
   selectBox = document.getElementById("select-pass-type"),
-  optionsPassphrase = document.querySelectorAll(".options-passphrase .option input"),
-  wordSeperatorInput = document.querySelector(".wordSeperator .wordSeparatorInput"),
-  hidePassphraseSettingsContainer = document.querySelector(".pass-settings .passphraseSettingsContainer"),
-  hideOptionsPassword = document.querySelector(".pass-settings .options-password");
+  optionsPassphrase = document.querySelectorAll(
+    ".options-passphrase .option input"
+  ),
+  wordSeperatorInput = document.querySelector(
+    ".wordSeperator .wordSeparatorInput"
+  ),
+  hidePassphraseSettingsContainer = document.querySelector(
+    ".pass-settings .passphraseSettingsContainer"
+  ),
+  hideOptionsPassword = document.querySelector(
+    ".pass-settings .options-password"
+  );
 
 /////////////////////////////////////////////////////////////
-
 
 let jsonDataArray = [];
 //Fetching json data from json file
@@ -198,9 +205,9 @@ const generatePassword = () => {
     //getting unique values in randomPassword
     randomPassword = Array.from(new Set(randomPassword.split(""))).join("");
 
-    if(randomPassword.length < lengthSlider.value) {
-        generatePassword();
-        return
+    if (randomPassword.length < lengthSlider.value) {
+      generatePassword();
+      return;
     }
   }
 
@@ -237,9 +244,7 @@ const updatePassIndicator = () => {
 //Updating password length slider value to the password length (span) value.
 
 const updateSlider = () => {
-
   if (selectBox.value == "Password") {
-    
     // if (rangeValue < 5) {
 
     //   lengthSlider.value = 5;
@@ -252,9 +257,7 @@ const updateSlider = () => {
     updatePassIndicator();
 
     passLengthSpan.innerText = lengthSlider.value;
-    
   } else {
-
     // if (rangeValue < 3) {
     //   lengthSlider.value = 3;
     //   passLengthSpan.innerText = lengthSlider.value;
@@ -288,7 +291,7 @@ const updateSlider = () => {
   let heightLimit = 6.71021; /* Maximum height: 6.71021remrem */
   passwordInput.style.height = ""; /* Reset the height*/
   passwordInput.style.height =
-  Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
+    Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
 };
 
 //Copying Password to clipboard using copy icon
@@ -347,13 +350,13 @@ const callResetSettings = () => {
 };
 
 //Call GenerateBtn depending on password or passphrase
-const callGenerateBtn = () => {
-  if (selectBox.value == "Password") {
-    generatePassword();
-  } else {
-    generatePassphrase();
-  }
-};
+// const callGenerateBtn = () => {
+//   if (selectBox.value == "Password") {
+//     generatePassword();
+//   } else {
+//     generatePassphrase();
+//   }
+// };
 
 ////////////////////////////////
 
@@ -398,13 +401,12 @@ copyIcon.addEventListener("click", copyPassword);
 lengthSlider.addEventListener("input", updateSlider);
 lengthSlider.addEventListener("click", updateSlider);
 resetIcon.addEventListener("click", callResetSettings);
-generateBtn.addEventListener("click", callGenerateBtn);
+generateBtn.addEventListener("click", updateSlider);
 selectBox.addEventListener("change", selectPassType);
 
-wordSeperatorInput.addEventListener("input", () =>{
-  
-  if(wordSeperatorInput.value.length >= null){
-    wordSeperatorInput.value = wordSeperatorInput.value.slice(0,1);
+wordSeperatorInput.addEventListener("input", () => {
+  if (wordSeperatorInput.value.length >= null) {
+    wordSeperatorInput.value = wordSeperatorInput.value.slice(0, 1);
     updateSlider();
   }
 });
