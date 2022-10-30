@@ -153,7 +153,7 @@ const generatePassword = () => {
 
 let jsonDataArray = [];
 //Fetching json data from json file
-async function fetchFun() {
+async function fetchWords() {
   await fetch("./json/words.json")
     .then((res) => res.json())
     .then((data) => {
@@ -169,11 +169,23 @@ async function fetchFun() {
       } else {
         wrapper.style.display = "none";
         wrapperError.style.display = "block";
+        setTimeout(() => {
+          wrapper.style.display = "block";
+          wrapperError.style.display = "none";
+          selectBox.value = "Password";
+          selectPassType();
+        }, 1500);
       }
     })
     .catch((error) => {
       wrapper.style.display = "none";
       wrapperError.style.display = "block";
+      setTimeout(() => {
+        wrapper.style.display = "block";
+        wrapperError.style.display = "none";
+        selectBox.value = "Password";
+        selectPassType();
+      }, 1500);
     });
 }
 
@@ -393,7 +405,7 @@ const selectPassType = () => {
     passLengthTitle.innerText = "Passphrase Length";
     passSettingsTitle.innerText = "Passphrase Settings";
     generateBtn.innerText = "Generate Passphrase";
-    fetchFun();
+    fetchWords();
   }
 };
 
