@@ -24,91 +24,14 @@ const lengthSlider = document.querySelector(".pass-length input"),
   ),
   hideOptionsPassword = document.querySelector(
     ".pass-settings .options-password"
-  );
-
-/////////////////////////////////////////////////////////////
-
-let jsonDataArray = [];
-//Fetching json data from json file
-async function fetchFun() {
-  await fetch("./json/custom_words.json")
-    .then((res) => res.json())
-    .then((data) => {
-      //filtering word having length greater than 3
-      data.forEach((word) => {
-        if (word.length > 3) {
-          jsonDataArray.push(word);
-        }
-      });
-    });
-}
-fetchFun(); //Calling for 1st time
-
-console.log(wordSeperatorInput.value);
-
-const generatePassphrase = () => {
-  let randomPassphrase = "";
-  let words = [];
-  let wordSeperatorDefault = "-";
-  let wordSeperatorInputValue = wordSeperatorInput.value;
-  let randomNumber;
-  let appendWordNumber;
-
-  //Generate randomPassphraseLoop
-  function randomPassphraseLoop() {
-    let uniqueWords;
-
-    for (let i = 0; i < lengthSlider.value; i++) {
-      words.push(
-        jsonDataArray[Math.floor(Math.random() * jsonDataArray.length)]
-      );
-    }
-
-    uniqueWords = Array.from(new Set(words)); //Getting unique words in uniquewords array
-
-    if (uniqueWords.length < lengthSlider.value) {
-      words = []; //Emptying words array
-      randomPassphraseLoop();
-      return;
-    }
-
-    //Capitalize Start
-
-    function capitalizeFirstLetter(word) {
-      return word.charAt(0).toUpperCase() + word.slice(1);
-    }
-
-    //Capitalize End
-
-    optionsPassphrase.forEach((option) => {
-      if (option.checked) {
-        if (option.id == "capitalise") {
-          uniqueWords = uniqueWords.map(capitalizeFirstLetter);
-        }
-
-        if (option.id == "incNumber") {
-          randomNumber = Math.floor(Math.random() * 9);
-          appendWordNumber = Math.floor(Math.random() * uniqueWords.length);
-          uniqueWords[appendWordNumber] =
-            uniqueWords[appendWordNumber] + randomNumber;
-        }
-      }
-    });
-
-    if (wordSeperatorInputValue == null) {
-      //Setting Default Seprator as space if no input given
-      randomPassphrase = uniqueWords.join(wordSeperatorDefault);
-    } else {
-      randomPassphrase = uniqueWords.join(wordSeperatorInputValue);
-    }
-
-    passwordInput.value = randomPassphrase;
-  }
-  randomPassphraseLoop(); //Calling for 1st time
-  // });
-};
+  ),
+  wrapper = document.querySelector(".wrapper"),
+  wrapperError = document.querySelector(".wrapper-error"),
+  wrapperErrorMsg = document.querySelector(".wrapper-error p");
 
 ////////////////////////////////////////////////////////////////
+
+//GENERATE PASSWORD START
 
 const characters = {
   //object of letters,numbers & symbols and regex
@@ -220,6 +143,105 @@ const generatePassword = () => {
   }
 };
 
+//GENERATE PASSWORD END
+
+/////////////////////////////////////////////////////////////
+
+//GENERATE PASSPHRASE START
+
+//Words API for fetching words
+
+let jsonDataArray = [];
+//Fetching json data from json file
+async function fetchFun() {
+  await fetch("./json/words.json")
+    .then((res) => res.json())
+    .then((data) => {
+      //filtering word having length greater than 3
+      data.forEach((word) => {
+        if (word.length > 3) {
+          jsonDataArray.push(word);
+        }
+      });
+      //checking if jsonDataArray contains at least 20 words
+      if (jsonDataArray.length > 20) {
+        resetPassphraseSettings();
+      } else {
+        wrapper.style.display = "none";
+        wrapperError.style.display = "block";
+      }
+    })
+    .catch((error) => {
+      wrapper.style.display = "none";
+      wrapperError.style.display = "block";
+    });
+}
+
+//generatePassphrase Function
+const generatePassphrase = () => {
+  let randomPassphrase = "";
+  let words = [];
+  let wordSeperatorDefault = "-";
+  let wordSeperatorInputValue = wordSeperatorInput.value;
+  let randomNumber;
+  let appendWordNumber;
+
+  //Generate randomPassphraseLoop
+  function randomPassphraseLoop() {
+    let uniqueWords;
+
+    for (let i = 0; i < lengthSlider.value; i++) {
+      words.push(
+        jsonDataArray[Math.floor(Math.random() * jsonDataArray.length)]
+      );
+    }
+
+    uniqueWords = Array.from(new Set(words)); //Getting unique words in uniquewords array
+
+    if (uniqueWords.length < lengthSlider.value) {
+      words = []; //Emptying words array
+      randomPassphraseLoop();
+      return;
+    }
+
+    //Capitalize Start
+
+    function capitalizeFirstLetter(word) {
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    }
+
+    //Capitalize End
+
+    optionsPassphrase.forEach((option) => {
+      if (option.checked) {
+        if (option.id == "capitalise") {
+          uniqueWords = uniqueWords.map(capitalizeFirstLetter);
+        }
+
+        if (option.id == "incNumber") {
+          randomNumber = Math.floor(Math.random() * 9);
+          appendWordNumber = Math.floor(Math.random() * uniqueWords.length);
+          uniqueWords[appendWordNumber] =
+            uniqueWords[appendWordNumber] + randomNumber;
+        }
+      }
+    });
+
+    if (wordSeperatorInputValue == null) {
+      //Setting Default Seprator as space if no input given
+      randomPassphrase = uniqueWords.join(wordSeperatorDefault);
+    } else {
+      randomPassphrase = uniqueWords.join(wordSeperatorInputValue);
+    }
+
+    passwordInput.value = randomPassphrase;
+  }
+  randomPassphraseLoop(); //Calling for 1st time
+};
+
+//GENERATE PASSPHRASE END
+
+//updatePassIndicator Function
 //Updating Password Indicator with value = weak,medium and strong and changing its color from css accordingly
 const updatePassIndicator = () => {
   let weakValue, mediumValue;
@@ -241,59 +263,43 @@ const updatePassIndicator = () => {
       : "strong";
 };
 
-//Updating password length slider value to the password length (span) value.
-
-const updateSlider = () => {
-  if (selectBox.value == "Password") {
-    // if (rangeValue < 5) {
-
-    //   lengthSlider.value = 5;
-    //   passLengthSpan.innerText = lengthSlider.value;
-    // }
-
-    //blocking slider at minimum 5 length to get password with all filters if all are applied
-    lengthSlider.min = 5;
-    generatePassword();
-    updatePassIndicator();
-
-    passLengthSpan.innerText = lengthSlider.value;
-  } else {
-    // if (rangeValue < 3) {
-    //   lengthSlider.value = 3;
-    //   passLengthSpan.innerText = lengthSlider.value;
-    //   return;
-    // }
-
-    //blocking slider at minimum 3 length for passphrase
-    lengthSlider.min = 3;
-
-    generatePassphrase();
-    updatePassIndicator();
-
-    passLengthSpan.innerText = lengthSlider.value;
-
-    // if (lengthSlider.value < 4) {
-    //   passwordInput.style.height = "3.5rem";
-    // } else if (lengthSlider.value >= 4 && lengthSlider.value < 8) {
-    //   passwordInput.style.height = "4rem";
-    // } else if (lengthSlider.value >= 8 && lengthSlider.value <= 12) {
-    //   passwordInput.style.height = "5rem";
-    // } else if (lengthSlider.value > 12) {
-    //   passwordInput.style.height = "7.35542rem";
-    // }
-    // let heightLimit = 10; /* Maximum height: 10rem */
-    // passwordInput.style.height = ""; /* Reset the height*/
-    // passwordInput.style.height =
-    // Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
-  }
-
-  //Changing textarea size according to the password/passphrase length
+//changeTextareaSize Function
+//Changing textarea size according to the password/passphrase length
+const changeTextareaSize = () => {
   let heightLimit = 6.71021; /* Maximum height: 6.71021remrem */
   passwordInput.style.height = ""; /* Reset the height*/
   passwordInput.style.height =
     Math.min(passwordInput.scrollHeight / 15.4987654, heightLimit) + "rem";
 };
 
+//updateSliderPassword Function
+const updateSliderPassword = () => {
+  //blocking slider at minimum 5 length to get password with all filters if all are applied
+  lengthSlider.min = 5;
+  generatePassword();
+  updatePassIndicator();
+
+  //Updating password length slider value to the password length (span) value.
+  passLengthSpan.innerText = lengthSlider.value;
+
+  changeTextareaSize();
+};
+
+//updateSliderPassphrase Function
+const updateSliderPassphrase = () => {
+  //blocking slider at minimum 3 length for passphrase
+  lengthSlider.min = 3;
+
+  generatePassphrase();
+  updatePassIndicator();
+
+  //Updating password length slider value to the password length (span) value.
+  passLengthSpan.innerText = lengthSlider.value;
+
+  changeTextareaSize();
+};
+
+//copyPassword Function
 //Copying Password to clipboard using copy icon
 const copyPassword = () => {
   navigator.clipboard.writeText(passwordInput.value); // copying randomPassword to clipboard
@@ -305,42 +311,47 @@ const copyPassword = () => {
   }, 1500);
 };
 
-//Calling generatePassword on every checkbox selected
+//Calling updateSliderPassword on every checkbox selected for password
 for (let i = 0; i < options.length; i++) {
   if (options[i].type === "checkbox") {
-    options[i].onclick = updateSlider;
+    options[i].onclick = updateSliderPassword;
   }
 }
 
-//Calling generatePassphrase on every checkbox selected
+//Calling updateSliderPassphrase on every checkbox selected for passphrase
 for (let i = 0; i < optionsPassphrase.length; i++) {
   if (optionsPassphrase[i].type === "checkbox") {
-    optionsPassphrase[i].onclick = updateSlider;
+    optionsPassphrase[i].onclick = updateSliderPassphrase;
   }
 }
 
-//Resetting all checkboxes and all other things on clickling reset icon
+//resetPasswordSettings Function
+//Resetting all checkboxes and all other things for password on clickling reset icon
 const resetPasswordSettings = () => {
   for (let i = 0; i < options.length; i++) {
     if (options[i].type === "checkbox" && options[i].id != "lowercase") {
       options[i].checked = false;
       excludeDuplicateCheckbox.disabled = false;
       lengthSlider.value = 15;
-      updateSlider();
+      updateSliderPassword();
     }
   }
 };
+
+//resetPassphraseSettings Function
+//Resetting all checkboxes and all other things for passphrase on clickling reset icon
 const resetPassphraseSettings = () => {
   for (let i = 0; i < optionsPassphrase.length; i++) {
     if (optionsPassphrase[i].type === "checkbox") {
       optionsPassphrase[i].checked = false;
       wordSeperatorInput.value = "-";
       lengthSlider.value = 3;
-      updateSlider();
+      updateSliderPassphrase();
     }
   }
 };
 
+//Call resetBtn event depending on password or passphrase
 const callResetSettings = () => {
   if (selectBox.value == "Password") {
     resetPasswordSettings();
@@ -349,22 +360,21 @@ const callResetSettings = () => {
   }
 };
 
-//Call GenerateBtn depending on password or passphrase
-// const callGenerateBtn = () => {
-//   if (selectBox.value == "Password") {
-//     generatePassword();
-//   } else {
-//     generatePassphrase();
-//   }
-// };
+//Call generateBtn depending on password or passphrase
+const callGenerateBtn = () => {
+  if (selectBox.value == "Password") {
+    updateSliderPassword();
+  } else {
+    updateSliderPassphrase();
+  }
+};
 
-////////////////////////////////
-
+//selectPassType Function
 const selectPassType = () => {
   //called once by default(on first reload)
 
   if (selectBox.value == "Password") {
-    resetPassphraseSettings();
+    resetPasswordSettings();
     selectBox.value == "Password";
     hideOptionsPassword.style.display = "flex";
     hidePassphraseSettingsContainer.style.display = "none";
@@ -374,9 +384,7 @@ const selectPassType = () => {
     passLengthTitle.innerText = "Password Length";
     passSettingsTitle.innerText = "Password Settings";
     generateBtn.innerText = "Generate Password";
-    updateSlider();
   } else {
-    resetPasswordSettings();
     hideOptionsPassword.style.display = "none";
     hidePassphraseSettingsContainer.style.display = "block";
     lengthSlider.max = 20;
@@ -385,9 +393,8 @@ const selectPassType = () => {
     passLengthTitle.innerText = "Passphrase Length";
     passSettingsTitle.innerText = "Passphrase Settings";
     generateBtn.innerText = "Generate Passphrase";
-    updateSlider();
+    fetchFun();
   }
-  // alert(selectBox.value);
 };
 
 //Calling by default when page loads START
@@ -395,18 +402,31 @@ selectBox.value = "Password";
 selectPassType();
 //Calling by default when page loads END
 
-///////////////////////////////
-
+//All Event Listners
 copyIcon.addEventListener("click", copyPassword);
-lengthSlider.addEventListener("input", updateSlider);
-lengthSlider.addEventListener("click", updateSlider);
 resetIcon.addEventListener("click", callResetSettings);
-generateBtn.addEventListener("click", updateSlider);
+generateBtn.addEventListener("click", callGenerateBtn);
 selectBox.addEventListener("change", selectPassType);
+
+lengthSlider.addEventListener("input", () => {
+  if (selectBox.value == "Password") {
+    updateSliderPassword();
+  } else {
+    updateSliderPassphrase();
+  }
+});
+
+lengthSlider.addEventListener("click", () => {
+  if (selectBox.value == "Password") {
+    updateSliderPassword();
+  } else {
+    updateSliderPassphrase();
+  }
+});
 
 wordSeperatorInput.addEventListener("input", () => {
   if (wordSeperatorInput.value.length >= null) {
     wordSeperatorInput.value = wordSeperatorInput.value.slice(0, 1);
-    updateSlider();
+    updateSliderPassphrase();
   }
 });

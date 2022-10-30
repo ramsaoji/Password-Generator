@@ -46,6 +46,9 @@ body {
 .wrapper {
   margin: 1.25rem 1.75rem;
 }
+.wrapper-error{
+  margin: 1.25rem 1.75rem;
+}
 /* Select Start */
 .pass-type {
   display: flex;
